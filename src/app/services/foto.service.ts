@@ -34,6 +34,7 @@ export class FotoService {
       key : this.keyfoto,
       value : JSON.stringify(this.dataFoto)
     })
+    this.simpanFoto(Foto)
   }
   public async simpanFoto(foto : CameraPhoto){
     const base64Data = await this.readAsBase64(foto);
@@ -43,6 +44,7 @@ export class FotoService {
       data : base64Data,
       directory : FilesystemDirectory.Data
     });
+    console.log(simpanFile);
     // if (this.platform.is('hybrid')){
     //   return {
     //     filepath : simpanFile.uri,
