@@ -43,32 +43,32 @@ export class FotoService {
       data : base64Data,
       directory : FilesystemDirectory.Data
     });
-    if (this.platform.is('hybrid')){
-      return {
-        filepath : simpanFile.uri,
-        webviewPath : Capacitor.convertFileSrc(simpanFile.uri)
+    // if (this.platform.is('hybrid')){
+    //   return {
+    //     filepath : simpanFile.uri,
+    //     webviewPath : Capacitor.convertFileSrc(simpanFile.uri)
   
-      }
-    }else {
+    //   }
+    // }else {
       return {
         filepath : namaFile,
         webviewPath : foto.webPath
   
       }
-    }
+  //  }
     
   }
   private async readAsBase64(foto : CameraPhoto){
-    if (this.platform.is('hybrid')){
-      const file = await Filesystem.readFile({
-        path : foto.path
-      });
-      return file.data;
-    }else{
+    // if (this.platform.is('hybrid')){
+    //   const file = await Filesystem.readFile({
+    //     path : foto.path
+    //   });
+    //   return file.data;
+    // }else{
       const response = await fetch(foto.webPath);
       const blob = await response.blob()
       return await this.convertBlobtoBase64(blob) as string; 
-    }
+    //}
    
   }
   convertBlobtoBase64 = (blob : Blob) => new Promise((resolve, reject)=>{
@@ -82,15 +82,16 @@ export class FotoService {
   public async loadfoto(){
     const listFoto = await Storage.get({key : this.keyfoto});
     this.dataFoto = JSON.parse(listFoto.value) || [];
-    if (!this.platform.is('hybrid')){
+  
       for (let foto of this.dataFoto){
         const readFile = await Filesystem.readFile({
           path : foto.filepath,
           directory : FilesystemDirectory.Data
         });
+        
         foto.webviewPath = `data:image/jpeg;base64, ${readFile.data}`;
       }
-    }
+    
   
   }
 }
